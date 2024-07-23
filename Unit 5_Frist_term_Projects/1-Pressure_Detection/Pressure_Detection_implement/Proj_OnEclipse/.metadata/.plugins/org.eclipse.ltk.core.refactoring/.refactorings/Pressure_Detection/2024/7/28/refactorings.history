@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Pressure_Detection/Main_Algorithm&apos; to &apos;Main_Algorithm.c&apos;" description="Rename resource &apos;Main_Algorithm&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Main_Algorithm" name="Main_Algorithm.c" stamp="1720878663373" updateReferences="true"/>
+</session>

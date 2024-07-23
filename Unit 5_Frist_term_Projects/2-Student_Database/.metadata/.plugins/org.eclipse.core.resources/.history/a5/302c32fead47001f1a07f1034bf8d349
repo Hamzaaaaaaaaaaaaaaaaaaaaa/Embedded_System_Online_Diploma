@@ -1,0 +1,667 @@
+/*
+ * Student_Database_Using_Queue.c
+ *
+ *  Created on: Jul 19, 2024
+ *      Author: Hamza Ahmed
+ */
+
+#include "Student_Database_Using_Queue.h"
+
+FILE *students_file, *database_students_file;
+
+/****************************************************************************************************************************************/
+static void Print_Students_Info   (FIFO_Node_st *student);
+static FIFO_Node_st *Search_Student_by_Roll_Number (FIFO_Buf_st *students_queue,int roll);
+/* For not to repeat the roll number*/
+
+/****************************************************************************************************************************************/
+
+FIFO_Status_st Students_DB_Init (FIFO_Buf_st *students_queue,FIFO_Node_st *Node,int length)
+{
+	if (!students_queue|| !Node || !length)
+	{
+		printf("Student Initialization >> Failed\n");
+		return FIFO_NULL;
+	}
+	students_queue -> base = Node ;
+	students_queue -> head = 	students_queue -> base  ;
+	students_queue -> tail = 	students_queue -> base;;
+	students_queue -> length = length ;
+	students_queue -> counter = 0 ;
+
+	printf("Student Initialization >> Passed\n");
+	return FIFO_NO_ERROR;
+
+
+}
+/****************************************************************************************************************************************/
+
+void  Add_Student_From_File ( FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st new_student;
+	int i ;
+
+	//open a file --> read
+	students_file  = fopen("students_file.txt","r");
+
+	//check if the file is not empty
+	if (students_file == NULL)
+	{
+		printf("\n [ERROR] students_file.txt file is empty.\n");
+		printf("\n [ERROR] Adding students from file >> failed.\n");
+
+	}
+	//REading from file until eof = End of file
+	while (!feof(students_file))
+	{
+		//reading roll number
+		fscanf(students_file,"%d",&new_student.roll_number);
+		//check if the roll number is exist
+		if (Search_Student_by_Roll_Number(students_queue,new_student.roll_number) != NULL)
+		{
+			// Error ...repeated roll number
+			printf("\n[ERROR] Roll number %d is already taken \n",new_student.roll_number);
+
+			//Ignore the rest of the line --> because this roll numbers taken
+			fscanf(students_file,"%*[^\n]");
+			continue;
+		}
+		fscanf(students_file,"%s",new_student.first_name);
+		fscanf(students_file,"%s",new_student.last_name);
+		fscanf(students_file,"%f",new_student.GPA);
+
+		//teading course IDs
+		for(i = 0 ;i< COURSES_NUMBERS ; ++i)
+		{
+			fscanf(students_file,"%d",&new_student.course_id[i]);
+		}
+		//Enqueue a new student
+		if ((FIFO_enqueue(students_queue,new_student))==FIFO_NO_ERROR)
+		{
+			printf("\n [INFO] Roll number %d is saved successfully\n",new_student.roll_number);
+		}
+		else
+		{
+			printf("[ERROR] Adding students by file failed \n");
+		}
+	}
+	printf("\n[INFO] Students details are saved succesfully\n");
+
+	// close th file
+	fclose(students_file);
+}
+
+/****************************************************************************************************************************************/
+
+void Add_Student_From_DataBase_File ( FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st new_student ;
+	int i ;
+
+	//opening a database_students.txt file with option read
+	database_students_file = fopen("DataBase_Students.txt","r");
+
+	//check if the file exist and there is data or not
+	if (database_students_file == NULL)
+	{
+		printf("\n [ERROR] database_students_file.txt file not found . \n");
+		printf("\n [ERROR] adding students from update file failed. \n");
+
+	}
+
+	//reading students until end of file this using of feof == check end of file
+	while (!feof(database_students_file))
+	{
+		//reading roll number of the student
+		fscanf (database_students_file,"%d",&new_student.roll_number);
+		//check if the roll number is existed
+		if(Search_Student_by_Roll_Number(students_queue, new_student.roll_number) != NULL)
+		{
+			/* Error ... reapeated Roll Number */
+			printf("\n[ERROR] Roll number %d is already taken\n", new_student.roll_number);
+
+			/* Ignore the rest of the line --> because this roll numberis taken */
+			fscanf(database_students_file, "%*[^\n]");
+
+			continue;
+		}
+		// reading data >>> frist name , last name and GPA
+		fscanf(database_students_file,"%s",new_student.first_name);
+		fscanf(database_students_file,"%s",new_student.last_name);
+		fscanf(database_students_file,"%f",new_student.GPA);
+		//reading course IDs
+		for ( i = 0 ; i < COURSES_NUMBERS ; ++i)
+		{
+			fscanf(database_students_file,"%d",&new_student);
+		}
+
+		//Enqueue a new  student
+		if ((FIFO_enqueue(students_queue,new_student)) == FIFO_NO_ERROR)
+		{
+			printf("\n [INFO] Roll number 5d is saved successfully\n",new_student.roll_number);
+
+		}
+		else
+		{
+			prinf("\n [ERROR] Adding students by update file failed \n");
+
+		}
+	}
+	printf("\n [INFO] Studens Recober are saved successfully \n");
+
+	//close the file
+	fclose(database_students_file);
+}
+
+/****************************************************************************************************************************************/
+
+void  Add_Student_Manualy (FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st new_student;
+	int i ;
+	printf("\n===ENter student data===\n");
+	printf("\t Enter roll number: ");
+	scanf("%d"&new_student.roll_number);
+
+	//Scan if rhe roll number which entered is exist
+	if (Search_Student_by_Roll_Number(students_queue,new_student.roll_number))
+	{
+		print("\n[ERROR] Roll number %d is already");
+		printf("\n[ERROR] Adding student failed\n");
+
+	}
+
+	printf("\t Enter frist name : ");
+	scanf("%s",new_student.first_name);
+
+	printf("\t Enter last name : ");
+	scanf("%s",new_student.last_name);
+
+	printf("\t Enter GPA : ");
+	scanf("%s",new_student.GPA);
+
+	printf("\t Enter Courses IDs \n ");
+	for(i = 0 ; i < COURSES_NUMBERS ; ++i)
+	{
+		printf("\t Enter Courses no.%d : ",i+1);
+		scanf("%s",new_student.first_name);
+	}
+	//Add new student
+	if(FIFO_enqueue(students_queue,new_student) == FIFO_NO_ERROR)
+	{
+		printf("\n[INFO] Student details us saved successfully\n");
+	}
+	else
+	{
+		printf("\nAdding Students failed \n");
+	}
+
+}
+/****************************************************************************************************************************************/
+
+void  Find_Student_by_Roll_Number(FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *student;
+	FIFO_Status_st queue_status ;
+	// check if rhe queue is empty
+	queue_status = FIFO_is_Empty(students_queue);
+	if ((queue_status == FIFO_EMPTY) || (queue_status == FIFO_NULL))
+	{
+		printf("\n[ERROR] Find student by roll number failed \n");
+	}
+	int roll_number ;
+	printf("\n Enter roll number : ");
+	scanf("%d",&roll_number);
+
+	// Scan the queue to find the roll number
+	student = Search_Student_by_Roll_Number(students_queue,roll_number);
+
+	if (student == NULL)
+	{
+		printf("\n[ERROR] ROll number %d is not found",roll_number);
+	}
+	else
+	{
+		Print_Students_Info(student);
+	}
+}
+/****************************************************************************************************************************************/
+
+void  Find_Student_by_FirstName(FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *student = students_queue->tail ;
+	char Input_name[NAME_LENGTH],i;
+
+	FIFO_Status_st queue_status;
+
+	queue_status = FIFO_is_Empty(students_queue);
+
+	if((queue_status == FIFO_EMPTY)||(queue_status == FIFO_NULL))
+	{
+		printf("\n [ERROR] FInd student by frist name is failed\n");
+	}
+	printf("\n Enter Frist Name :");
+	scanf("%s",Input_name);
+
+	for(i = 0 ; i < students_queue->counter ; ++i)
+	{
+		if(!(strcmp(Input_name,student->first_name)))
+		{
+			Print_Students_Info(student);
+		}
+		else
+		{
+			printf("\n [ERROR] %s in not found \n",Input_name);
+		}
+		//check if we reach the last node in the queue
+		if ((student+1) == (students_queue->base + students_queue->length))
+		{
+			student = students_queue->base ;
+		}
+		else
+		{
+			student++;
+		}
+	}
+}
+/****************************************************************************************************************************************/
+
+void  Find_Student_by_Course (FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *student;
+	int input_id , i , j , number_enroled_student = 0 ;
+	FIFO_Status_st queue_status ;
+		// check if rhe queue is empty
+		queue_status = FIFO_is_Empty(students_queue);
+		if ((queue_status == FIFO_EMPTY) || (queue_status == FIFO_NULL))
+		{
+			printf("\n[ERROR] Find student by roll number failed \n");
+		}
+		//Get the ID that you want to search about
+		printf("\n Enter Course ID :");
+		scanf("%d",&input_id);
+
+		student = students_queue-> tail;
+		for(i=0 ; i< students_queue->counter;++i)
+		{
+			for(j =0 ; j < COURSES_NUMBERS ; ++j)
+			{
+				if (student->course_id[j] == input_id)
+				{
+					Print_Students_Info(student);
+					number_enroled_student ++ ;
+					printf("\n");break;
+				}
+			}
+			if((student+1) == (students_queue->base + students_queue->length))
+			{
+				student = students_queue->base ;
+			}
+			else
+			{
+				student ++ ;
+			}
+		}
+		//check if it is not found in anpy stud
+		if (number_enroled_student == 0)
+		{
+			printf("\n [ERROR] Course id %d is not found\n",input_id);
+		}
+		else
+		{
+			printf("\n[INFO] Total number of students enrolled: %d\n",number_enroled_student);
+		}
+}
+/****************************************************************************************************************************************/
+
+void  Print_Student_by_Count (FIFO_Buf_st *students_queue)
+{
+	int counter = students_queue->counter;
+	int capacity = students_queue->length;
+	printf("[INFO] Total number of students is %d\n",counter);
+	printf("[INFO] You can add up to %d students\n",capacity);
+	printf("[INFO] You can add o %d more students\n",capacity - counter);
+}
+/****************************************************************************************************************************************/
+
+void  Delete_Student_by_Roll_Number (FIFO_Buf_st *students_queue)
+{
+	int roll_number,i , flag = 0;
+	FIFO_Node_st *student ;
+	FIFO_Status_st queue_status ;
+			// check if rhe queue is empty
+			queue_status = FIFO_is_Empty(students_queue);
+			if ((queue_status == FIFO_EMPTY) || (queue_status == FIFO_NULL))
+			{
+				printf("\n[ERROR] Find student by roll number failed \n");
+			}
+	/* Enter roll number you want to delete */
+	printf("\n Enter roll number : ");
+	scanf("%d",&roll_number);
+
+	student = students_queue->base ;
+	for (i = 0 ; i < students_queue->counter ;++i)
+	{
+		if(student->roll_number == roll_number)
+		{
+			//deleting
+			*student = *(students_queue-> tail);
+
+			//update counter of queue
+			students_queue-> counter--;
+
+			//checl if we reach the last Node inthe queue
+			if ((students_queue -> tail+1) == (students_queue->base + students_queue->length))
+			{
+				//set to the start
+				students_queue-> tail = students_queue->base ;
+			}
+			else
+			{
+				//go to next tail
+				students_queue->tail++;
+			}
+			flag = 1 ;
+			break;
+		}
+		else
+		{
+			flag = 0 ;
+
+		}
+		student++ ;
+	}
+	if(flag == 1)
+	{
+		printf("\n[INFO] The Roll Number is removed successfully\n");
+	}
+	else
+	{
+		printf("\n[ERROR] The Roll Number %d not found \n",roll_number);
+
+	}
+
+}
+/****************************************************************************************************************************************/
+
+void  Update_Student_by_Roll_Number (FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *update_student , *student ;
+	int i , input_roll , input_option, input_new_roll,flag = 0;
+
+	FIFO_Status_st queue_status;
+
+		/* Check >>> the queue is empty */
+		queue_status = FIFO_is_empty(students_queue);
+
+		if((queue_status == FIFO_EMPTY) || (queue_status == FIFO_NULL))
+		{
+			printf("\n[ERROR] Delete student by roll number failed\n");
+
+		}
+
+	//Enter roll number you want to update
+	printf("\n Enter roll number :");
+	scanf("%d",&input_roll);
+
+	//search about the input roll to ger its whole Node
+	update_student = Search_Student_by_Roll_Number(students_queue,input_roll );
+
+	//check if we find roll number in the queue
+	if (update_student == NULL)
+	{
+		printf("\nRoll number %d is not found \n",input_roll);
+	}
+	else
+	{
+		// if we found the roll number lets print all data
+		printf("=== Student data =====");
+		Print_Students_Info(update_student);
+	}
+
+
+	printf("\nWhich date do you want to change ?\n");
+	printf("\t 1: The Roll Number\n");
+	printf("\t 2: The First Name\n");
+	printf("\t 3: The Second Name\n");
+	printf("\t 4: The GPA Score\n");
+	printf("\t 5: The Courses ID\n");
+	printf("Enter your option: ");
+
+	/* Get the option */
+	scanf("%d",&input_option);
+	switch (input_option)
+	{
+	case 1 :
+		printf("Enter the new roll number : ");
+		scanf("%d",&input_new_roll);
+
+		student = students_queue -> tail ;
+
+
+	}
+}
+/****************************************************************************************************************************************/
+void Update_DataBase_Students( FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *student;
+	int i , j;
+
+	//opening a Data_Students.txt file with w option to write in it
+	database_students_file = fopen("DataBase_Students.txt","w");
+
+	//check if the file exist and there is data or not
+	if(students_file == NULL)
+	{
+		printf("\n [ERROR] DataBase_Students.txt create failed. \n");
+		printf("\n [ERROR] update students file failed. \n");
+	}
+
+	student= students_queue->tail ;
+
+	for(i = 0 ; i< students_queue->counter;++i)
+	{
+		//write into file
+		fprintf(database_students_file,"%d",student->roll_number);
+		fprintf(database_students_file,"%d",student->first_name);
+		fprintf(database_students_file,"%d",student->last_name);
+		fprintf(database_students_file,"%d",student->GPA);
+
+		for(j=0; j < COURSES_NUMBERS ; ++j)
+		{
+			fprintf(database_students_file,"%d",student->course_id[j]);
+		}
+	//New line after ebery FIFO_Node_st
+		fprintf(database_students_file,"\n");
+
+		//check if we reach the last Node in the queue '
+		if ((student + 1)==(students_queue->base +students_queue->length))
+		{
+			student = students_queue->base ;
+		}
+		else
+		{
+			//go to next tail
+			student++;
+		}
+
+
+	}
+
+		printf("\n [INFO] Update Students details are saved in file successfully\n");
+
+		//closing the file
+		fclose(database_students_file);
+
+
+
+
+}
+/****************************************************************************************************************************************/
+void  Show_Students_Info(FIFO_Buf_st *students_queue)
+{
+	FIFO_Node_st *student;
+	char i ;
+	FIFO_Status_st queue_status ;
+
+	//check >> the queue is empty
+	queue_status = FIFO_is_empty(students_queue);
+	if((queue_status == FIFO_EMPTY) || (queue_status == FIFO_NULL))
+	{
+		printf("\n[ERROR] Show students info failed\n");
+	}
+
+	printf("\n All Students\n\n");
+	student = students_queue -> tail ;
+	for(i = 0 ; i < students_queue -> counter ; ++i)
+	{
+		Print_Students_Info(student);
+		printf("\n");
+
+
+
+		/* Check if we reach the last Node in the queue */
+		if((student + 1) == (students_queue->base + students_queue->length))
+		{
+			student = students_queue->base;
+		}
+		else
+		{
+			/* go to the next tail */
+			student++;
+		}
+
+	}
+}
+/****************************************************************************************************************************************/
+
+FIFO_Status_st FIFO_enqueue(FIFO_Buf_st *fifo_buf,FIFO_Node_st Node)
+{
+	//check paramerers validity
+	if (!fifo_buf || !fifo_buf->base || !fifo_buf -> head || !fifo_buf->tail)
+	{
+		printf("FIFO Enqueue failed : Null is passed\n");
+
+		return FIFO_NULL;
+	}
+	//check if fifo is full
+	if((FIFO_is_full(fifo_buf))== FIFO_FULL)
+	{
+		printf("FIFO Enqueue failed : FIFO is full\n");
+		return FIFO_FULL;
+	}
+	//Enqueue new Node
+	*(fifo_buf->head) = Node ;
+	// Check if the head in the end of fifo to start over
+	if((fifo_buf->head +1) == (fifo_buf->base +fifo_buf->length))
+	{
+		fifo_buf->head = fifo_buf->base ;
+	}
+	else
+	{
+		fifo_buf->head++;
+	}
+	fifo_buf->counter++;
+
+
+
+	return FIFO_NO_ERROR;
+
+
+
+
+}
+/****************************************************************************************************************************************/
+
+FIFO_Status_st FIFO_is_full(FIFO_Buf_st *fifo_buf)
+{
+	/*validation*/
+	if (!fifo_buf || !fifo_buf->base || !fifo_buf -> head || !fifo_buf->tail)
+		{
+			printf("FIFO Enqueue failed : Null is passed\n");
+
+			return FIFO_NULL;
+		}
+	//check if the number of Nodes matches the total buffer length
+	if(fifo_buf->counter == fifo_buf->length)
+	{
+		return FIFO_FULL ;
+
+	}
+	return FIFO_NOT_FULL ;
+}
+/****************************************************************************************************************************************/
+
+FIFO_Status_st FIFO_is_empty(FIFO_Buf_st *fifo_buf)
+{
+	/*validation*/
+		if (!fifo_buf || !fifo_buf->base || !fifo_buf -> head || !fifo_buf->tail)
+			{
+				printf("FIFO Enqueue failed : Null is passed\n");
+
+				return FIFO_NULL;
+			}
+		if(fifo_buf->counter == 0)
+			{
+				return FIFO_EMPTY ;
+
+			}
+			return FIFO_NOT_EMPTY ;
+}
+
+/****************************************************************************************************************************************/
+static void Print_Students_Info   (FIFO_Node_st *student)
+{
+	int i;
+	printf("The Student details are : \n");
+	printf("Frist Name : %s\n",student->first_name);
+	printf("Last Name : %s\n",student->last_name);
+	printf("Roll Number : %d\n",student->roll_number);
+	printf("GPA: %0.1f\n",student->GPA);
+	printf("Courses IDs are : \n");
+	for(i= 0 ; i< COURSES_NUMBERS ;++i)
+	{
+		printf("Course %d id: %d\n",i+1,student->course_id[i]);
+	}
+}
+/****************************************************************************************************************************************/
+static FIFO_Node_st *Search_Student_by_Roll_Number(FIFO_Buf_st *students_queue, int roll)
+{
+	int i ;
+	FIFO_Node_st *student = students_queue->tail;
+
+	/* Loop inside the queue */
+	for (i = 0; i < students_queue->counter; ++i)
+	{
+		if (student->roll_number == roll)
+		{
+			break;
+		}
+
+		if((student + 1) == (students_queue->base + students_queue->length))
+		{
+			student = students_queue->base;
+		}
+		else
+		{
+			student++;
+		}
+	}
+
+	if(i == students_queue->counter)
+	{
+		student = NULL;
+	}
+
+	return student;
+}
+
+
+
+
+
+
+
+
+
+

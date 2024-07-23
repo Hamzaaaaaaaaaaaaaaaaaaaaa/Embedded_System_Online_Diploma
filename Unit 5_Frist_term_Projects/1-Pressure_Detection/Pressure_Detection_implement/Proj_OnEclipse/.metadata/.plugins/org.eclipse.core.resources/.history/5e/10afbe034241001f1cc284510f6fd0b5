@@ -1,0 +1,17 @@
+/*
+ * main.c
+ *
+ *  Created on: Jul 13, 2024
+ *      Author: Hamza Ahmed
+ */
+
+#include "Platform_Types.h"
+#include "Pressure_Sensor.h"
+#include "Alarm_Actuator.h"
+#include "Main_Algorithm.h"
+
+
+void setup()
+{
+	PS_
+}

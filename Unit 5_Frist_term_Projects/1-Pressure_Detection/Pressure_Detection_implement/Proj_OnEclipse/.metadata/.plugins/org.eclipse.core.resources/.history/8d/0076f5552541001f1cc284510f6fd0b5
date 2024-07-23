@@ -1,0 +1,39 @@
+/*
+ * Pressure_Sensor.c
+ *
+ *  Created on: Jul 13, 2024
+ *      Author: Hamza Ahmed
+ */
+
+#include "Pressure_Sensor.h"
+
+int PS_Get_Pressure_Random(int l , int r , int count);
+
+//Varibles
+static int P_val = 0 ;
+
+// STATE Pointer to Func
+void (*pPS_state)();
+
+//Definition of states/func
+
+STATE_define(PS_busy)
+{
+ //State Name
+	PS_State_ID = PS_BUSY;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

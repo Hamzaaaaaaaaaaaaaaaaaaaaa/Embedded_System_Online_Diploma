@@ -1,0 +1,15 @@
+/*
+ * Main_Algorithm.c
+ *
+ *  Created on: Jul 13, 2024
+ *      Author: Hamza Ahmed
+ */
+
+#include "Main_Algorithm.h"
+#include "Alarm_Actuator.h"
+#include "Platform_Types.h"
+
+
+//Varibles
+static int P_val = 0 ;
+static boolean

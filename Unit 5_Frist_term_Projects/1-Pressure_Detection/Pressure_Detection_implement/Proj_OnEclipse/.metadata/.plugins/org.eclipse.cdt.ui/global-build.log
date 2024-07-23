@@ -1,0 +1,88 @@
+17:42:11 **** Rebuild of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Alarm_Actuator.o "..\\Alarm_Actuator.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Pressure_Sensor.o "..\\Pressure_Sensor.c" 
+In file included from ..\Pressure_Sensor.c:8:0:
+..\Pressure_Sensor.h:11:19: fatal error: State.h: No such file or directory
+ #include <State.h>
+                   ^
+compilation terminated.
+17:42:52 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Pressure_Sensor.o "..\\Pressure_Sensor.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Main_Algorithm.o "..\\Main_Algorithm.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o 
+Pressure_Sensor.o: In function `ST_PS_busy':
+C:\Learn in depth\Unit 5_Frist_term_Projects\1-Pressure_Detection\Pressure_Detection_implement\Proj_OnEclipse\Pressure_Detection\Debug/../Pressure_Sensor.c:31: undefined reference to `Set_Pressure_Val'
+c:/mingw/bin/../lib/gcc/mingw32/6.3.0/../../../libmingw32.a(main.o):(.text.startup+0xa0): undefined reference to `WinMain@16'
+collect2.exe: error: ld returned 1 exit status
+17:43:34 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Pressure_Sensor.o "..\\Pressure_Sensor.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o 
+Pressure_Sensor.o: In function `ST_PS_busy':
+C:\Learn in depth\Unit 5_Frist_term_Projects\1-Pressure_Detection\Pressure_Detection_implement\Proj_OnEclipse\Pressure_Detection\Debug/../Pressure_Sensor.c:31: undefined reference to `Set_Pressure_Val'
+c:/mingw/bin/../lib/gcc/mingw32/6.3.0/../../../libmingw32.a(main.o):(.text.startup+0xa0): undefined reference to `WinMain@16'
+collect2.exe: error: ld returned 1 exit status
+17:45:56 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o 
+Pressure_Sensor.o: In function `ST_PS_busy':
+C:\Learn in depth\Unit 5_Frist_term_Projects\1-Pressure_Detection\Pressure_Detection_implement\Proj_OnEclipse\Pressure_Detection\Debug/../Pressure_Sensor.c:31: undefined reference to `Set_Pressure_Val'
+c:/mingw/bin/../lib/gcc/mingw32/6.3.0/../../../libmingw32.a(main.o):(.text.startup+0xa0): undefined reference to `WinMain@16'
+collect2.exe: error: ld returned 1 exit status
+20:06:05 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Main_Algorithm.o "..\\Main_Algorithm.c" 
+In file included from ..\Main_Algorithm.c:10:0:
+..\Platform_Types.h:34:2: error: #endif without #if
+ #endif /* PLATFORM_TYPES_H_ */
+  ^~~~~
+..\Main_Algorithm.c: In function 'ST_MA_Waiting':
+..\Main_Algorithm.c:31:2: warning: implicit declaration of function 'Alarm_State_Set' [-Wimplicit-function-declaration]
+  Alarm_State_Set(Alarm_State);
+  ^~~~~~~~~~~~~~~
+..\Main_Algorithm.c: In function 'ST_MA_Detecting':
+..\Main_Algorithm.c:40:1: error: expected expression before '}' token
+ }
+ ^
+At top level:
+..\Main_Algorithm.c:16:12: warning: 'P_threshold' defined but not used [-Wunused-variable]
+ static int P_threshold = 20 ;
+            ^~~~~~~~~~~
+21:02:54 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Alarm_Actuator.o "..\\Alarm_Actuator.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o main.o "..\\main.c" 
+..\main.c: In function 'main':
+..\main.c:36:26: error: expected expression before '=' token
+   for(Delay = 0; Delay <== 10000 ; Delay++);
+                          ^
+21:03:04 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o main.o "..\\main.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Main_Algorithm.o "..\\Main_Algorithm.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o main.o 
+Info: Nothing to build for Pressure_Detection
+21:04:44 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Alarm_Actuator.o "..\\Alarm_Actuator.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o main.o 
+21:05:31 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Pressure_Sensor.o "..\\Pressure_Sensor.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o main.o 
+Info: Nothing to build for Pressure_Detection
+Info: Nothing to build for Pressure_Detection
+Info: Nothing to build for Pressure_Detection
+Info: Nothing to build for Pressure_Detection
+21:06:53 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Main_Algorithm.o "..\\Main_Algorithm.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o main.o 
+Info: Nothing to build for Pressure_Detection
+21:08:43 **** Incremental Build of configuration Debug for project Pressure_Detection ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o Main_Algorithm.o "..\\Main_Algorithm.c" 
+gcc -o Pressure_Detection.exe Alarm_Actuator.o Main_Algorithm.o Pressure_Sensor.o main.o 
+Info: Nothing to build for Pressure_Detection
